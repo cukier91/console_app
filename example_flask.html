@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/movies">
+    <label>
+        Insert Title:
+        <input type="text"
+                name = "movie">
+    </label>
+    <label>
+        Wyślij:
+        <input type="button">
+    </label>
+
+</form>
+</body>
+</html>
+
+
+from flask import Flask
+from flask import request
+app = Flask(__name__)
+
+
+from flask import Flask
+from flask import request
+app = Flask(__name__)
+
+@app.route("/pizza", methods=['GET', 'POST'])
+def pizza():
+    if request.method == 'GET':
+        content = """
+        <form action="/pizza" method="POST">
+            mała <input type="radio" name="size" value="mala"><br>
+            srednia <input type="radio" name="size" value="srednia"><br>
+            duza <input type="radio" name="size" value="duza"><br>
+
+            Ser <input type='checkbox' name='extra' value='Ser'><br>
+            Pieczarki <input type='checkbox' name='extra' value='Pieczarki'><br>
+            Salami <input type='checkbox' name='extra' value='Salami'><br>
+
+            <input type='submit' value='Order'>
+        </form>
+        """
+        return content
+    else:
+        size = request.form['size']
+        ingredients = request.form.getlist('extra')
+        if len(ingredients) > 0:
+            str = ','.join(ingredients)
+            return f'Pizza {size}, Wybrano skladniki: {str}'
+        else:
+            return f'Pizza {size}, nie wybrano skladnikow'
+if __name__ == '__main__':
+    app.run()
